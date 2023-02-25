@@ -2,7 +2,7 @@
     <div class="login_container">
      <div class="login_box">
         <div class="avatar-box">
-            <img src="..//assets/logo.png" alt="">
+           111 <img src="..//assets/logo.png" alt="">
         </div>
     </div>
     </div>
