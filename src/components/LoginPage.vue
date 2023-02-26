@@ -1,9 +1,16 @@
 <template>
     <div class="login_container">
      <div class="login_box">
+        <!-- 这是头像区 -->
         <div class="avatar-box">
-           111 <img src="..//assets/logo.png" alt="">
+            <img src="..//assets/logo.png" alt="">
         </div>
+        <!-- 这是表单区 -->
+    <el-form label-width="80px">
+        <el-form-item label="活动名称">
+        <el-input></el-input>
+    </el-form-item>
+</el-form>
     </div>
     </div>
 </template>
