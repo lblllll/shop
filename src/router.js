@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import LoginPage from '../components/LoginPage.vue'
-import '../assets/css/global.css'
+import LoginPage from './components/LoginPage.vue'
+import './assets/css/global.css'
 
 Vue.use(VueRouter)
 
