@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') return next()
   // 并且获取保存的token值
   const tokenStr = window.sessionStorage.getItem('token')
-  // 没有token，就要强制跳转到登陆页
+  // 没有token，就要强制跳转到登陆页.
   if (!tokenStr) return next('/login')
   next()
 })
