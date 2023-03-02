@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginPage from './components/LoginPage.vue'
 import HomePage from './components/HomePage.vue'
+import WelcomePage from './components/WelcomePage.vue'
+import UsersList from './components/user/UsersPage.vue'
 // import {from} from 'core-js/core/array'
 
 Vue.use(VueRouter)
@@ -9,7 +11,14 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', component: LoginPage },
-  { path: '/home', component: HomePage }
+  {
+    path: '/home',
+    component: HomePage,
+    redirect: '/welcome',
+    children: [
+      { path: '/welcome', component: WelcomePage },
+      { path: '/users', component: UsersList }]
+  }
 ]
 
 const router = new VueRouter({
