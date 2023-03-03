@@ -11,13 +11,13 @@
   <el-row :gutter="20">
     <el-col :span="9">
     <!-- 搜索与添加区域 -->
-      <el-input placeholder="请输入内容">
-      <el-button slot="append" icon="el-icon-search"></el-button>
+      <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="getUserList">
+      <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
       </el-input>
     </el-col>
     <!-- 这是添加按钮 -->
       <el-col :span="4">
-        <el-button type="primary">添加用户</el-button>
+        <el-button type="primary" @click="addDialogVisible = true ">添加用户</el-button>
     </el-col>
     </el-row>
     <!-- 用户列表区域 -->
@@ -55,12 +55,55 @@
       :total="total">
     </el-pagination>
 </el-card>
+  <!-- 添加用户的对话框 -->
+  <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="50%">
+  <!-- 内容主体区域 -->
+  <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="70px" >
+  <el-form-item label="用户名" prop="username">
+    <el-input v-model="addForm.username"></el-input>
+  </el-form-item>
+  <el-form-item label="密码" prop="password">
+    <el-input v-model="addForm.password"></el-input>
+  </el-form-item>
+  <el-form-item label="邮箱" prop="email">
+    <el-input v-model="addForm.email"></el-input>
+  </el-form-item>
+  <el-form-item label="手机" prop="mobile">
+    <el-input v-model="addForm.mobile"></el-input>
+  </el-form-item>
+  </el-form>
+  <span slot="footer" class="dialog-footer">
+    <!-- 这是底部的按钮区域 -->
+    <el-button @click="addDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+  </span>
+</el-dialog>
   </div>
 </template>
 <!-- 行为区域 -->
 <script>
 export default {
   data() {
+    // 邮箱验证规则
+    var cheackEmail = (rule, value, cb) => {
+    // 验证邮箱的正则表达式
+      const regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
+      if (regEmail.test(value)) {
+      // 合法的邮箱
+        return cb()
+      }
+      cb(new Error('请输入合理的邮箱'))
+    }
+    // 电话号码验证规则
+    var cheackMobile = (rule, value, cb) => {
+    // 验证手机号的正则表达式
+      const regMobile = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]18[0-9]14[57])[0-9]{8}$/
+      if (regMobile.test(value)) {
+      // 合法的邮箱
+        return cb()
+      }
+      cb(new Error('请输入合理的手机号'))
+    }
     return {
     // 获取用户列表参数对象 queryInfo
       queryInfo: {
@@ -71,9 +114,38 @@ export default {
         pagesize: 3
       },
       userlist: [],
-      total: 0
+      total: 0,
+      // 控制添加用户对话框的显示与隐藏
+      addDialogVisible: false,
+      // 添加用户的表单数据
+      addForm: {
+        username: '',
+        password: '',
+        email: '',
+        mobile: ''
+      },
+      // 这是添加用户表单验证规则对象
+      addFormRules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 5, message: '请用户名的长度在 3 ~ 5 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入登陆密码', trigger: 'blur' },
+          { min: 6, max: 10, message: '请登陆密码的长度在 6 ~ 10个字符', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { validator: cheackEmail, trigger: 'blur' }
+        ],
+        mobile: [
+          { required: true, message: '请输入手机号码', trigger: 'blur' },
+          { validator: cheackMobile, trigger: 'blur' }
+        ]
+      }
     }
   },
+  // 生命周期函数
   created() {
     this.getUserList()
   },
@@ -100,8 +172,15 @@ export default {
       this.getUserList()
     },
     // 监听swich开关状态的改变
-    userStateChanged(userInfo) {
+    async userStateChanged(userInfo) {
       console.log(userInfo)
+      //   调用api接口保存用户最新的状态
+      const { data: res } = await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
+      if (res.meta.status !== 200) {
+        userInfo.mg_state = !userInfo.mg_state
+        return this.$message.error('更新用户状态失败')
+      }
+      this.$message.success('用户状态更新成功')
     }
   }
 }
