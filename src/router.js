@@ -5,6 +5,8 @@ import HomePage from './components/HomePage.vue'
 import WelcomePage from './components/WelcomePage.vue'
 import UsersList from './components/user/UsersPage.vue'
 import RightstPage from './components/power/RightstPage.vue'
+import RolusPage from './components/power/RolusPage.vue'
+import CatePage from './components/goods/CatePage.vue'
 // import {from} from 'core-js/core/array'
 
 Vue.use(VueRouter)
@@ -19,7 +21,9 @@ const routes = [
     children: [
       { path: '/welcome', component: WelcomePage },
       { path: '/users', component: UsersList },
-      { path: '/rights', component: RightstPage }
+      { path: '/rights', component: RightstPage },
+      { path: '/roles', component: RolusPage },
+      { path: '/categories', component: CatePage }
     ]
   }
 ]

@@ -33,7 +33,7 @@
             </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="210" :enterable="false">
+      <el-table-column label="操作" width="250px" :enterable="false">
         <template  slot-scope="scope">
             <!-- 三个按钮 -->
             <el-button type="primary" icon="el-icon-edit" size="medium" @click="showEditDialog(scope.row.id)"></el-button>
