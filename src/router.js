@@ -7,6 +7,7 @@ import UsersList from './components/user/UsersPage.vue'
 import RightstPage from './components/power/RightstPage.vue'
 import RolusPage from './components/power/RolusPage.vue'
 import CatePage from './components/goods/CatePage.vue'
+import Params from './components/goods/ParamsPage.vue'
 // import {from} from 'core-js/core/array'
 
 Vue.use(VueRouter)
@@ -23,7 +24,8 @@ const routes = [
       { path: '/users', component: UsersList },
       { path: '/rights', component: RightstPage },
       { path: '/roles', component: RolusPage },
-      { path: '/categories', component: CatePage }
+      { path: '/categories', component: CatePage },
+      { path: '/params', component: Params }
     ]
   }
 ]
